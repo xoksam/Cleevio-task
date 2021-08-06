@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://localhost:5436/eshop-dev'
+    username: 'postgres'
+    password: 'admin'
+
+  jpa:
+    hibernate:
+      ddl-auto: 'validate'
+
+  liquibase:
+    contexts: 'dev'

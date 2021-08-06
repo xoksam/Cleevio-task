@@ -1,0 +1,19 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  profiles:
+    active: dev
+
+  jpa:
+    hibernate:
+      ddl-auto: 'validate'
+    properties:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  liquibase:
+    change-log: 'classpath:db/liquibase-changelog.xml'
