@@ -4,7 +4,50 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-    <changeSet author="xoksam" id="20210806-01">
+    <changeSet id="20210806-01" author="xoksam">
         <createSequence sequenceName="hibernate_sequence"/>
     </changeSet>
+
+    <changeSet id="20210806-02" author="xoksam">
+        <createSequence sequenceName="watch_sequence"/>
+    </changeSet>
+
+    <changeSet id="20210806-03" author="xoksam">
+        <createTable tableName="IMAGE">
+            <column name="ID" type="BIGINT" valueSequenceNext="hibernate_sequence">
+                <constraints primaryKey="true" primaryKeyName="PK_IMAGE" nullable="false"/>
+            </column>
+
+            <column name="DATA" type="TEXT" remarks="BASE64 image string">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="NAME" type="VARCHAR(128)" remarks="Image display name"/>
+
+            <column name="DESCRIPTION" type="VARCHAR(512)" remarks="Image description"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20210806-04" author="xoksam">
+        <createTable tableName="WATCH">
+            <column name="ID" type="BIGINT" valueSequenceNext="watch_sequence">
+                <constraints primaryKey="true" primaryKeyName="PK_WATCH" nullable="false"/>
+            </column>
+
+            <column name="NAME" type="VARCHAR(128)" >
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="WATCH_TYPE" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(512)"/>
+            <column name="IMAGE_ID" type="BIGINT"/>
+
+            <column name="CREATED" type="TIMESTAMP" defaultValueDate="now()">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
