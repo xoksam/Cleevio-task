@@ -1,0 +1,35 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="20210806-06" author="xoksam">
+        <insert tableName="WATCH">
+            <column name="ID" valueSequenceNext="watch_sequence"/>
+            <column name="NAME" value="Tommy Hilfigher - Kyle"/>
+            <column name="WATCH_TYPE" value="chrono"/>
+            <column name="DESCRIPTION" value="Blue watch with leather wrist band"/>
+            <column name="IMAGE_ID" valueNumeric="1"/>
+            <column name="CREATED" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="WATCH">
+            <column name="ID" valueSequenceNext="watch_sequence"/>
+            <column name="NAME" value="CASIO VINTAGE CA-53WF-3BEF"/>
+            <column name="WATCH_TYPE" value="digital"/>
+            <column name="DESCRIPTION" value="Green vintage digital watch"/>
+            <column name="IMAGE_ID" valueNumeric="2"/>
+            <column name="CREATED" valueDate="now()"/>
+        </insert>
+
+        <insert tableName="WATCH">
+            <column name="ID" valueSequenceNext="watch_sequence"/>
+            <column name="NAME" value="Fountain watch"/>
+            <column name="WATCH_TYPE" value="fountain"/>
+            <column name="DESCRIPTION" value="A watch with a fountain picture"/>
+            <column name="CREATED" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

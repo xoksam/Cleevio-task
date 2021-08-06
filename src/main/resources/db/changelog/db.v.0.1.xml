@@ -50,4 +50,7 @@
         </createTable>
     </changeSet>
 
+    <include file="dev/dev_image_mock.xml" relativeToChangelogFile="true" context="dev"/>
+    <include file="dev/dev_watch_mock.xml" relativeToChangelogFile="true" context="dev"/>
+
 </databaseChangeLog>
