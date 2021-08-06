@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ImageDao extends AbstractCommonDao {
-
     @Autowired
     private ImageMapper imageMapper;
 

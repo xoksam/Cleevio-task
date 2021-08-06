@@ -34,14 +34,16 @@ public class ExceptionController {
                                                                       HttpServletResponse response,
                                                                       MessageException exception) {
         logger.error(exception, exception);
+        var exceptionStatus = exception.getHttpStatus();
 
-        var httpStatus = exception.getHttpStatus() == null
+        var httpStatus = exceptionStatus == null
                 ? HttpStatus.BAD_REQUEST
-                : exception.getHttpStatus();
+                : exceptionStatus;
 
         var dto = new MessageExceptionDTO();
         dto.setMessage(exception.getMessage());
-        dto.setHttpStatus(exception.getHttpStatus());
+        var statusMessage = httpStatus.value() + " " + httpStatus.getReasonPhrase();
+        dto.setHttpStatus(statusMessage);
 
         return new ResponseEntity<>(dto, httpStatus);
     }
