@@ -16,6 +16,7 @@ import sk.annotation.library.jam.annotations.*;
                 d = "image"
         )
 )
+// https://github.com/AnnotationSro/java-annotation-mapper
 public abstract class WatchMapper {
     public abstract WatchDTO mapWatchToDto(Watch watch);
 

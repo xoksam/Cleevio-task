@@ -2,8 +2,8 @@ package com.cleevio.task.eshop.services.as;
 
 
 import com.cleevio.task.eshop.common.dto.ImageDTO;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.cleevio.task.eshop.services.dao.ImageDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 // AS - Application Service
@@ -11,10 +11,11 @@ import org.springframework.stereotype.Component;
 // Should never be called directly in a controller
 @Component
 public class ImageAS {
-    public static final Logger logger = LogManager.getLogger(ImageAS.class);
+    @Autowired
+    private ImageDao imageDao;
 
     public ImageDTO getImageDTOById(Long imageId) {
-        return new ImageDTO(); // FIXME
+        return imageDao.findImageById(imageId);
     }
 
     public Long getIdFromImageDTO(ImageDTO dto) {
