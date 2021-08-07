@@ -22,7 +22,7 @@ docker stop eshop-psql
 * URL: `jdbc:postgresql://localhost:5436/eshop-dev`
 
 #### Useful commands
-* Drop entire DB
+* Drop entire DB and create an empty schema
 ```postgresql
 drop schema public cascade;
 create schema public;
