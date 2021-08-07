@@ -1,4 +1,4 @@
-#DB setup for development
+# DB setup for development
 ## You need to have `docker` installed!
 
 #### 1. Create a docker container where the DB will run
