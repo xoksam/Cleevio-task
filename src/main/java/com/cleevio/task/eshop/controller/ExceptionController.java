@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 
 @RestControllerAdvice
@@ -24,11 +26,32 @@ public class ExceptionController {
     private Logger logger = LogManager.getLogger(ExceptionController.class);
 
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity<MessageExceptionDTO> defaultHandler(HttpServletRequest request,
-                                                              HttpServletResponse response,
-                                                              Throwable exception) throws Throwable {
+    public ResponseEntity<ArgumentNotValidResponseDTO> defaultHandler(HttpServletRequest request,
+                                                                      HttpServletResponse response,
+                                                                      Throwable exception) throws Throwable {
         // Log the exception and then re-throw it
         logger.error(exception, exception);
+
+        // Hmm..
+        // This doesn't seem right tho
+        if (exception.getCause() != null && exception.getCause().getCause() instanceof ConstraintViolationException) {
+            var cause = (ConstraintViolationException) exception.getCause().getCause();
+
+            var dto = new ArgumentNotValidResponseDTO();
+            var invalidFields = new ArrayList<InvalidFieldDTO>();
+
+            for (ConstraintViolation<?> violation : cause.getConstraintViolations()) {
+                var invalidField = new InvalidFieldDTO();
+                invalidField.setField(violation.getPropertyPath().toString());
+                invalidField.setMessage(violation.getMessage());
+                invalidFields.add(invalidField);
+            }
+
+            dto.setInvalidFields(invalidFields);
+            var httpStatus = HttpStatus.BAD_REQUEST;
+
+            return new ResponseEntity<>(dto, httpStatus);
+        }
 
         throw exception;
     }
