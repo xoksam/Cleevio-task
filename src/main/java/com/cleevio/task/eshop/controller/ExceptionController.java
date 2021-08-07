@@ -1,6 +1,8 @@
 package com.cleevio.task.eshop.controller;
 
-import com.cleevio.task.eshop.common.dto.MessageExceptionDTO;
+import com.cleevio.task.eshop.common.dto.exception.ArgumentNotValidResponseDTO;
+import com.cleevio.task.eshop.common.dto.exception.InvalidFieldDTO;
+import com.cleevio.task.eshop.common.dto.exception.MessageExceptionDTO;
 import com.cleevio.task.eshop.common.exceptions.MessageException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,8 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -33,22 +34,23 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<MessageExceptionDTO> handleMethodArgumentNotValidException(HttpServletRequest request,
-                                                                                     HttpServletResponse response,
-                                                                                     MethodArgumentNotValidException exception) {
+    public ResponseEntity<ArgumentNotValidResponseDTO> handleMethodArgumentNotValidException(HttpServletRequest request,
+                                                                                             HttpServletResponse response,
+                                                                                             MethodArgumentNotValidException exception) {
         logger.error(exception, exception);
 
         var httpStatus = HttpStatus.BAD_REQUEST;
+        var dto = new ArgumentNotValidResponseDTO();
+        var invalidFields = new ArrayList<InvalidFieldDTO>();
 
-        var dto = new MessageExceptionDTO();
-        if (exception.getFieldError() != null) {
-            dto.setMessage(exception.getFieldError().getField() + " " + exception.getFieldError().getDefaultMessage());
-        } else {
-            dto.setMessage(exception.getLocalizedMessage());
+        for (var fieldError : exception.getFieldErrors()) {
+            var invalidFieldDTO = new InvalidFieldDTO();
+            invalidFieldDTO.setField(fieldError.getField());
+            invalidFieldDTO.setMessage(fieldError.getDefaultMessage());
+            invalidFields.add(invalidFieldDTO);
         }
 
-        var statusMessage = httpStatus.value() + " " + httpStatus.getReasonPhrase();
-        dto.setHttpStatus(statusMessage);
+        dto.setInvalidFields(invalidFields);
 
         return new ResponseEntity<>(dto, httpStatus);
     }

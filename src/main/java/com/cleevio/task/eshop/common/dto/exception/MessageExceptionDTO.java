@@ -1,4 +1,4 @@
-package com.cleevio.task.eshop.common.dto;
+package com.cleevio.task.eshop.common.dto.exception;
 
 import lombok.Data;
 
