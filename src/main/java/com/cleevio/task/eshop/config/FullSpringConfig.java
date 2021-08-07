@@ -15,10 +15,16 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import org.springframework.web.servlet.view.xml.MappingJackson2XmlView;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -52,5 +58,19 @@ public class FullSpringConfig implements WebMvcConfigurer {
     @Bean
     public ObjectMapper objectMapper() {
         return ObjectMapperConfig.objectMapper;
+    }
+
+    // To accept both XML and JSON requests
+    @Bean
+    public ViewResolver contentResolver() {
+        ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
+
+        List<View> views = new ArrayList<>();
+        views.add(new MappingJackson2XmlView());
+        views.add(new MappingJackson2JsonView());
+
+        resolver.setDefaultViews(views);
+
+        return resolver;
     }
 }
