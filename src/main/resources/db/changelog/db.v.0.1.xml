@@ -34,7 +34,7 @@
                 <constraints primaryKey="true" primaryKeyName="PK_WATCH" nullable="false"/>
             </column>
 
-            <column name="NAME" type="VARCHAR(128)" >
+            <column name="NAME" type="VARCHAR(128)">
                 <constraints nullable="false"/>
             </column>
 
@@ -48,6 +48,12 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="20210806-05" author="xoksam">
+        <addColumn tableName="WATCH">
+            <column name="PRICE" type="INT" defaultValueNumeric="0"/>
+        </addColumn>
     </changeSet>
 
     <include file="dev/dev_image_mock.xml" relativeToChangelogFile="true" context="dev"/>

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -38,5 +39,14 @@ public class Watch {
 
     @Column(name = "CREATED")
     private LocalDateTime created;
+
+    @Min(0)
+    @Column(name = "PRICE")
+    private int price;
+
+    @PrePersist
+    public void setCreatedDate() {
+        setCreated(LocalDateTime.now());
+    }
 
 }

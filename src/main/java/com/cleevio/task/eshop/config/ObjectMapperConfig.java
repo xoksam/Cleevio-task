@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class ObjectMapperConfig {
-    static final public ObjectMapper objectMapper = ObjectMapperConfig.createObjectMapper();
+    public static final ObjectMapper objectMapper = ObjectMapperConfig.createObjectMapper();
 
     private static ObjectMapper createObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();

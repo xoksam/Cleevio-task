@@ -4,7 +4,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="20210806-06" author="xoksam">
+    <changeSet id="20210806-07" author="xoksam">
         <insert tableName="WATCH">
             <column name="ID" valueSequenceNext="watch_sequence"/>
             <column name="NAME" value="Tommy Hilfigher - Kyle"/>
@@ -12,6 +12,7 @@
             <column name="DESCRIPTION" value="Blue watch with leather wrist band"/>
             <column name="IMAGE_ID" valueNumeric="1"/>
             <column name="CREATED" valueDate="now()"/>
+            <column name="PRICE" valueNumeric="512"/>
         </insert>
 
         <insert tableName="WATCH">
@@ -21,6 +22,7 @@
             <column name="DESCRIPTION" value="Green vintage digital watch"/>
             <column name="IMAGE_ID" valueNumeric="2"/>
             <column name="CREATED" valueDate="now()"/>
+            <column name="PRICE" valueNumeric="32"/>
         </insert>
 
         <insert tableName="WATCH">
@@ -29,6 +31,7 @@
             <column name="WATCH_TYPE" value="fountain"/>
             <column name="DESCRIPTION" value="A watch with a fountain picture"/>
             <column name="CREATED" valueDate="now()"/>
+            <column name="PRICE" valueNumeric="1234"/>
         </insert>
     </changeSet>
 

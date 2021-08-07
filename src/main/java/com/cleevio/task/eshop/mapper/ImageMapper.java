@@ -8,7 +8,6 @@ import sk.annotation.library.jam.annotations.*;
 @EnableSpring
 @Mapper
 public abstract class ImageMapper {
-    @MapperConfig(fieldIgnore = @FieldIgnore("id"))
     public abstract ImageDTO mapImageToDto(Image image);
 
     public abstract Image mapImageDtoToEntity(ImageDTO dto);

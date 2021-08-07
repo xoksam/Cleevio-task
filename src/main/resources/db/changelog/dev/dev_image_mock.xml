@@ -5,7 +5,7 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <!-- This is ridiculous -->
-    <changeSet id="20210806-05" author="xoksam">
+    <changeSet id="20210806-06" author="xoksam">
         <insert tableName="IMAGE">
             <column name="ID" valueSequenceNext="hibernate_sequence"/>
             <column name="NAME" value="Tommy Hilfigher Kyle - Front"/>

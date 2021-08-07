@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -20,11 +22,34 @@ public class ExceptionController {
     private Logger logger = LogManager.getLogger(ExceptionController.class);
 
     @ExceptionHandler(Throwable.class)
-    public void defaultHandler(HttpServletRequest request,
-                               HttpServletResponse response,
-                               Throwable exception) throws Throwable {
-        // Log every exception to log and re-throw it
-        logger.error(exception);
+    public ResponseEntity<MessageExceptionDTO> defaultHandler(HttpServletRequest request,
+                                                              HttpServletResponse response,
+                                                              Throwable exception) throws Throwable {
+        // Log the exception
+        logger.error(exception, exception);
+
+        // Hmm..
+        // This doesn't seem right tho
+        if (exception.getCause() != null && exception.getCause().getCause() instanceof ConstraintViolationException) {
+            var cause = (ConstraintViolationException) exception.getCause().getCause();
+            var message = new StringBuilder();
+
+            for (ConstraintViolation<?> violation : cause.getConstraintViolations()) {
+                message.append(violation.getPropertyPath())
+                        .append(" ")
+                        .append(violation.getMessage())
+                        .append(" ");
+            }
+
+            var httpStatus = HttpStatus.BAD_REQUEST;
+
+            var dto = new MessageExceptionDTO();
+            dto.setMessage(message.toString().trim());
+            var statusMessage = httpStatus.value() + " " + httpStatus.getReasonPhrase();
+            dto.setHttpStatus(statusMessage);
+
+            return new ResponseEntity<>(dto, httpStatus);
+        }
 
         throw exception;
     }

@@ -6,6 +6,8 @@ import com.cleevio.task.eshop.model.watch.Watch;
 import com.cleevio.task.eshop.services.as.ImageAS;
 import sk.annotation.library.jam.annotations.*;
 
+import java.time.LocalDateTime;
+
 @EnableSpring
 @Mapper
 @MapperConfig(
@@ -22,9 +24,7 @@ public abstract class WatchMapper {
 
     public abstract WatchDetailDTO mapWatchToDetailDto(Watch watch);
 
-    @MapperConfig(fieldIgnore = @FieldIgnore("id"))
     public abstract Watch mapWatchDtoToEntity(WatchDTO dto, @Return Watch watch);
 
-    @MapperConfig(fieldIgnore = @FieldIgnore("id"))
     public abstract Watch mapWatchDetailDtoToEntity(WatchDetailDTO dto, @Return Watch watch);
 }
