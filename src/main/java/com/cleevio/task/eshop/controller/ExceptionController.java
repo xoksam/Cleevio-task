@@ -8,6 +8,7 @@ import org.apache.logging.log4j.core.config.Order;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -25,33 +26,31 @@ public class ExceptionController {
     public ResponseEntity<MessageExceptionDTO> defaultHandler(HttpServletRequest request,
                                                               HttpServletResponse response,
                                                               Throwable exception) throws Throwable {
-        // Log the exception
+        // Log the exception and then re-throw it
         logger.error(exception, exception);
 
-        // Hmm..
-        // This doesn't seem right tho
-        if (exception.getCause() != null && exception.getCause().getCause() instanceof ConstraintViolationException) {
-            var cause = (ConstraintViolationException) exception.getCause().getCause();
-            var message = new StringBuilder();
+        throw exception;
+    }
 
-            for (ConstraintViolation<?> violation : cause.getConstraintViolations()) {
-                message.append(violation.getPropertyPath())
-                        .append(" ")
-                        .append(violation.getMessage())
-                        .append(" ");
-            }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<MessageExceptionDTO> handleMethodArgumentNotValidException(HttpServletRequest request,
+                                                                                     HttpServletResponse response,
+                                                                                     MethodArgumentNotValidException exception) {
+        logger.error(exception, exception);
 
-            var httpStatus = HttpStatus.BAD_REQUEST;
+        var httpStatus = HttpStatus.BAD_REQUEST;
 
-            var dto = new MessageExceptionDTO();
-            dto.setMessage(message.toString().trim());
-            var statusMessage = httpStatus.value() + " " + httpStatus.getReasonPhrase();
-            dto.setHttpStatus(statusMessage);
-
-            return new ResponseEntity<>(dto, httpStatus);
+        var dto = new MessageExceptionDTO();
+        if (exception.getFieldError() != null) {
+            dto.setMessage(exception.getFieldError().getField() + " " + exception.getFieldError().getDefaultMessage());
+        } else {
+            dto.setMessage(exception.getLocalizedMessage());
         }
 
-        throw exception;
+        var statusMessage = httpStatus.value() + " " + httpStatus.getReasonPhrase();
+        dto.setHttpStatus(statusMessage);
+
+        return new ResponseEntity<>(dto, httpStatus);
     }
 
     @ExceptionHandler(MessageException.class)

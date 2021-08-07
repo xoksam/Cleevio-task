@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping(ApiConstants.API_PREFIX + "/watch")
 public class WatchController {
@@ -26,7 +29,7 @@ public class WatchController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public WatchDetailDTO saveWatchDetail(@RequestBody WatchDetailDTO dto) {
+    public WatchDetailDTO saveWatchDetail(@RequestBody @NotNull @Valid WatchDetailDTO dto) {
         return watchService.saveWatchDetail(dto);
     }
 }
