@@ -1,6 +1,8 @@
 package com.cleevio.task.eshop.config;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.format.FormatterRegistry;
@@ -11,6 +13,7 @@ import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,7 +23,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@Import(BaseSpringConfig.class)
+@EnableAsync
 @EnableTransactionManagement
 public class FullSpringConfig implements WebMvcConfigurer {
 
@@ -44,5 +47,10 @@ public class FullSpringConfig implements WebMvcConfigurer {
         jsr310.setDateFormatter(DateTimeFormatter.ISO_DATE);
         jsr310.setTimeFormatter(DateTimeFormatter.ISO_TIME);
         jsr310.registerFormatters(registry);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return ObjectMapperConfig.objectMapper;
     }
 }
